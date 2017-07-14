@@ -52,7 +52,7 @@
                         closeVotesNeeded=$(this).html();
                     });
 
-                    $(".module.reviewable-post-stats > table > tbody > tr:nth-child(4)").after(`
+                    $(".module.reviewable-post-stats > table > tbody > tr:nth-last-child(2)").after(`
 <tr>
 <td class="label-key">Current Close Votes</td>
 <td class="label-value">` + closeVotesNeeded + `</td>
@@ -61,26 +61,27 @@
                 });
 
                 //Query timeline for more stats
+                //Only works with modly powers
                 $.get(timelinePath, function(timeline, status)
-                {
+                      {
                     let html = $.parseHTML(timeline);
                     let voteCloseCount = 0;
                     let voteOpenCount = 0;
                     let closedCount = 0;
                     let reopenedCount = 0;
-                    
+
                     $(html).find(".closure").each(function() 
-                    {          
+                                                  {          
                         try{voteCloseCount += $(this).html().match(/close/).length;}catch(err){}
                         try{voteOpenCount += $(this).html().match(/reopen/).length;}catch(err){}
                     });
-                    
+
                     $(html).find(".event-verb > span").each(function() 
-                    {     
+                                                            {     
                         try{closedCount += $(this).html().match(/closed/).length;}catch(err){}
                         try{reopenedCount += $(this).html().match(/reopened/).length;}catch(err){}
                     }); 
-                    $(".module.reviewable-post-stats > table > tbody > tr:nth-child(4)").after(`
+                    $(".module.reviewable-post-stats > table > tbody > tr:nth-last-child(2)").after(`
 <tr>
 <td class="label-key">Total Close Votes</td>
 <td class="label-value">` + voteCloseCount + `</td>
@@ -99,8 +100,7 @@
 </tr>
 `);              
                 });
-                                
-
+                               
             }, 1);
  
         }
